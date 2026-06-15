@@ -22,6 +22,7 @@ WORKDIR /app
 
 COPY package.json .
 
+# Vite is a frontend build tool used to develop and build applications built with frameworks like React, Vue, Angular, etc
 RUN npm install -g vite
 
 COPY --from=builder /app/dist ./dist
