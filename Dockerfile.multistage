@@ -23,6 +23,9 @@ WORKDIR /app
 COPY package.json .
 
 # Vite is a frontend build tool used to develop and build applications built with frameworks like React, Vue, Angular, etc
+#The -g stands for global --> It tells npm:
+#"Install Vite for the entire container/system, not just inside this project."
+
 RUN npm install -g vite
 
 COPY --from=builder /app/dist ./dist
