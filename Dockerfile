@@ -24,4 +24,4 @@ EXPOSE 4173
 
 # Bind to 0.0.0.0 so the server is reachable from outside the container
 # (the default 127.0.0.1 would only accept connections from inside it).
-CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "4173"]
+CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "5173"]
