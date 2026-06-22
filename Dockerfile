@@ -2,6 +2,9 @@
 FROM node:20-alpine
 
 # Create a dedicated non-root user. Running as root inside a container is a
+#-S creates a system user/group in Alpine Linux. We use it in Docker containers --
+#so applications run as a non-root service account instead of root, --
+#improving container security and following the principle of least privilege."
 RUN addgroup -S app && adduser -S -G app app
 
 # All app files live under /app.
