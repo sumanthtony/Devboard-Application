@@ -79,7 +79,8 @@ jobs:
         run: go test
         working-directory: backend
 
-      - name: Docker set up login
+        # Verify the docker credentials in repository settings--secrets & vars section---actions--
+      - name: Docker set up login 
         uses: docker/login-action@v4
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
