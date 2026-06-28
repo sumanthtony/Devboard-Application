@@ -93,3 +93,10 @@ jobs:
           context: ./backend  # Need to specify where the Dockerfile is present, it should be named exactly Dockerfile
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/devboard-backend:latest
+
+  deploy:
+    needs: [frontend, backend]
+    uses: ./.github/workflows/cd.yml
+    secrets: inherit
+
+  #Above step is used to trigger CD workflow and called in CD.yml workflow    
