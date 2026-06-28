@@ -46,6 +46,7 @@ jobs:
       - name: Push to Docker hub
         uses: docker/build-push-action@v7
         with:
+          context: ./frontend  # Need to specify where the Dockerfile is present, it should be named exactly Dockerfile
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/devboard-frontend:latest
 
@@ -89,5 +90,6 @@ jobs:
       - name: Push to Docker Hub
         uses: docker/build-push-action@v7
         with:
+          context: ./backend  # Need to specify where the Dockerfile is present, it should be named exactly Dockerfile
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/devboard-backend:latest
