@@ -9,6 +9,9 @@ on:
     branches: [GA-practice]
 
 jobs:
+
+  # For frontend code we have used node js
+
   frontend:
     runs-on: ubuntu-latest
     steps:
@@ -33,4 +36,33 @@ jobs:
       - name: Run test
         run: npm run test
         working-directory: frontend
-  #backend:
+
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+
+       # For Backend code we have used Go lang
+
+      - name: Code Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Go lang
+        uses: actions/setup-go@v6
+        with:
+          go-version: '1.23'
+          go-version-file: 'go.mod'
+          cache-dependency-path: 'go.sum'
+
+      - name: Run Go formatter
+        # Defines the Go formatting standards
+        run: go fmt         
+        working-directory: backend
+
+      - name: Run Go vetter
+        # Defines the Go compiler issues
+        run: go vet
+        working-directory: backend
+
+      - name: Run test
+        run: go test
+        working-directory: backend
