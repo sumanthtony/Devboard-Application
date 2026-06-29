@@ -6,6 +6,11 @@ name: CI
 
 on:
   push:
+    paths:
+      - 'frontend'
+      - 'backend'
+        #- '**'
+        #- '!.github/workflows/**'  # Not include the workflows to build 
     branches: [GA-practice]
 
 jobs:
@@ -37,19 +42,6 @@ jobs:
         run: npm run test
         working-directory: frontend
 
-      - name: Docker set up Login
-        uses: docker/login-action@v4
-        with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Push to Docker hub
-        uses: docker/build-push-action@v7
-        with:
-          context: ./frontend  # Need to specify where the Dockerfile is present, it should be named exactly Dockerfile
-          push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/devboard-frontend:latest
-
   backend:
     runs-on: ubuntu-latest
     steps:
@@ -80,22 +72,31 @@ jobs:
         run: go test
         working-directory: backend
 
-        # Verify the docker credentials in repository settings--secrets & vars section---actions--
-      - name: Docker set up login 
+  docker-build-push:
+    needs: [frontend, backend]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        folder: ['frontend', 'backend']
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v7
+
+      - name: Docker set up Login
         uses: docker/login-action@v4
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Push to Docker Hub
+      - name: Docker build and push to docker hub
         uses: docker/build-push-action@v7
         with:
-          context: ./backend  # Need to specify where the Dockerfile is present, it should be named exactly Dockerfile
+          context: ./${{ matrix.folder }}   # here we are using matrix concept to call and build multiple jobs at a time
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/devboard-backend:latest
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/devboard-${{ matrix.folder }}:latest
 
   deploy:
-    needs: [frontend, backend]
+    needs: [frontend, backend, docker-build-push]
     uses: ./.github/workflows/cd.yml
     secrets: inherit
 
