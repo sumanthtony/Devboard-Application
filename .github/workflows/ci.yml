@@ -15,7 +15,7 @@ on:
 
 jobs:
 
-  # For frontend code we have used node js
+  # For Frontend code we have used node js
 
   frontend:
     runs-on: ubuntu-latest
