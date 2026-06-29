@@ -7,8 +7,6 @@ name: CI
 on:
   push:
     paths:
-      - 'frontend'
-      - 'backend'
         #- '**'
         #- '!.github/workflows/**'  # Not include the workflows to build 
     branches: [GA-practice]
