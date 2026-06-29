@@ -8,7 +8,7 @@ on:
   push:
     paths:
         #- '**'
-        #- '!.github/workflows/**'  # Not include the workflows to build 
+        #- '!.github/workflows/**'  # Not include the workflows to build if specific workflow needs to be built
     branches: [GA-practice]
 
 jobs:
