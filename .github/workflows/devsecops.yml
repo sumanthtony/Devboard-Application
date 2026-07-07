@@ -7,6 +7,6 @@ on:
     branches: [DevSecOps]
 
 jobs:
-  code-quality:
+  Code-Quality:
     uses: ./.github/workflows/code-quality.yml
 
