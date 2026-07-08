@@ -9,7 +9,7 @@ jobs:
   dockerfile-lint-and-scan:
     runs-on: ubuntu-latest
     strategy:
-        fail-fast: false       
+        fail-fast: false       # If one workflow fails another still works
         matrix:
           folders: ['frontend', 'backend']
     steps:
