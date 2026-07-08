@@ -1,0 +1,11 @@
+#Goal: To run End to End DevSecops Pipeline
+
+name: DevSecOps
+
+on:
+  push:
+    branches: [DevSecOps]
+
+jobs:
+  code-quality:
+    uses: ./.github/workflows/code-quality.yml
