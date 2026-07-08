@@ -9,7 +9,7 @@ jobs:
   dockerfile-lint-and-scan:
     runs-on: ubuntu-latest
     strategy:
-        fail-fast: false
+        fail-fast: false       # It will build even one of worflow fails
         matrix:
           folders: ['frontend', 'backend']
     steps:
