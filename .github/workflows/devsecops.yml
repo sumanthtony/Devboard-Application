@@ -7,6 +7,8 @@ on:
     branches: [DevSecOps]
 
 jobs:
+  ## ---- CI -----
+
   code-quality:
     uses: ./.github/workflows/code-quality.yml
 
@@ -30,4 +32,11 @@ jobs:
   docker-push:
     uses: ./.github/workflows/docker-push.yml
     needs: [code-quality,run-tests,sonarqube-scan,docker-checks,dependency-checks,secret-scanning]
+    secrets: inherit
+
+  ## ---- CD -----
+
+  deploy:
+    needs: [docker-push]
+    uses: ./.github/workflows/deploy.yml
     secrets: inherit
