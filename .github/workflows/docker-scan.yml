@@ -28,7 +28,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Docker build ${{ matrix.folders }}
-        run: docker build -t ${{ vars.DOCKERHUB_USERNAME }}/${{ matrix.folders }}:latest
+        run: docker build -t ${{ vars.DOCKERHUB_USERNAME }}/devboard-${{ matrix.folders }}:latest .
         working-directory: ${{ matrix.folders }}
 
           #docker-image-scan:
