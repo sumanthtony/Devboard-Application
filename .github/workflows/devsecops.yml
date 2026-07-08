@@ -18,3 +18,4 @@ jobs:
 
   docker-checks:
     uses: ./.github/workflows/docker-scan.yml
+    secrets: inherit     # To access GITHUB_TOKEN with workflow_call we need to explicitly mention like this to access it
