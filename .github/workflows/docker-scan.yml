@@ -31,7 +31,17 @@ jobs:
         run: docker build -t ${{ vars.DOCKERHUB_USERNAME }}/devboard-${{ matrix.folders }}:latest .
         working-directory: ${{ matrix.folders }}
 
-          #docker-image-scan:
-    #needs: [dockerfile-lint-and-scan]
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@v0.36.0
+        continue-on-error: true
+        with:
+          image-ref: ${{ vars.DOCKERHUB_USERNAME }}/devboard-${{ matrix.folders }}:latest
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL'
+
+
 
 
