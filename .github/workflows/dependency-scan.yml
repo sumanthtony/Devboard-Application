@@ -1,0 +1,51 @@
+#Goal: To ensure that all the Packages and the Dependencies been Audited for security issues
+
+name: Dependency-Scan
+
+on:
+  workflow_call:
+
+    #BACKEND DEPENDENCY CHECK
+    
+jobs:
+  dependency-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.22
+          go-version-file: 'go.mod'
+          cache-dependency-path: go.sum
+
+      - name: Install GoVulnCheck
+        run: go install golang.org/x/vuln/cmd/govulncheck@v1.1.4
+
+      - name: Go Vuln Check
+        continue-on-error: true
+        run: govulncheck ./... > govulncheck-report.txt   #govulncheck ./...To scan Current directory and every subdirectory recursively 
+        working-directory: backend
+
+    #FRONTEND DEPENDENCY CHECK
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Run Dependency Scan for Node
+        run: npm audit
+        working-directory: frontend 
+
+      - name: Upload Report to Artifacts
+        if: always() # Ensures report uploads even if tests fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-scan-report
+          path: reports/dependency-report.txt
+          retention-days: 5
