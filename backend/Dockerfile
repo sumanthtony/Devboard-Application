@@ -1,26 +1,37 @@
-FROM dhi.io/golang:1-alpine AS builder
+FROM golang:1.22-alpine AS builder
 
 WORKDIR /app
 
+# Install git (needed for some Go modules)
+
+
+# Cache dependencies
 COPY go.mod go.sum ./
 RUN go mod download
 
+# Copy source code
 COPY . .
-RUN CGO_ENABLED=0 go build -o devboard-backend .
 
-FROM dhi.io/golang:1-alpine
+# Build static binary
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o devboard-backend .
+
+
+# -------- Stage 2: Runtime --------
+
+FROM golang:1.22-alpine AS runner 
 
 WORKDIR /app
 
-COPY --from=builder /app/devboard-backend ./devboard-backend
+# Create non-root user
+RUN adduser -D -u 10001 app
 
-# Ensure binary is executable
-RUN chmod +x ./devboard-backend
+# Copy only the binary from builder
+COPY --from=builder /app/devboard-backend .
 
-# DHI image runs as nonroot by default
-USER nonroot
+# Set permissions
+RUN chown app:app /app
+USER app
 
 EXPOSE 8080
 
-# Use exec form for proper signal handling
 ENTRYPOINT ["./devboard-backend"]
