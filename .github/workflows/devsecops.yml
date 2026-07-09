@@ -34,7 +34,7 @@ jobs:
     needs: [code-quality,run-tests,sonarqube-scan,docker-checks,dependency-checks,secret-scanning]
     secrets: inherit
 
-  ## ---- CD -------
+  ## ---- CD --------
 
   deploy:
     needs: [docker-push]
