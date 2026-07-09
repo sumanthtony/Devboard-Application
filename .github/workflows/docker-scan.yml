@@ -7,7 +7,7 @@ on:
 
 jobs:
   dockerfile-lint-and-scan:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     strategy:
         fail-fast: false      # If one fails still workflow runs 
         matrix:
