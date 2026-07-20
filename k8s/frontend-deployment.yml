@@ -6,7 +6,7 @@ metadata:
   labels:
     app: devboard-frontend
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: devboard-frontend
@@ -17,16 +17,25 @@ spec:
     spec:
       containers:
       - name: devboard-frontend
-        image: trainwithshubham/devboard-frontend:latest
+        image: sumanthtony/devboard-frontend:latest
         ports:
         - containerPort: 4173
-      resources:
-        requests: # min needed
-          cpu: 10m
-          memory: 64Mi
-        limits: # max usable
-          cpu: 250m
-          memory: 128Mi
 
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: devboard-frontend-service
+  namespace: devboard
+spec:
+  selector:
+    app: devboard-frontend
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 4173  # Pod port
+    nodePort: 30080  # Node ka port
+  type: NodePort
 
 
