@@ -6,7 +6,7 @@ metadata:
   labels:
     app: devboard-frontend
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: devboard-frontend
@@ -20,6 +20,14 @@ spec:
         image: sumanthtony/devboard-frontend:latest
         ports:
         - containerPort: 4173
+
+      resources:
+        requests:
+          memory: "80Mi"
+          cpu: "2m"
+        limits:
+          memory: "200Mi"
+          cpu: "500m"
 
 ---
 
