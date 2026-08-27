@@ -1,4 +1,4 @@
-# SAST / linting for all three services.
+# SAST / linting for all three services for 3 tier app
 name: Code Quality
 
 on:
