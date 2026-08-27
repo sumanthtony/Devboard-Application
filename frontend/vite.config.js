@@ -26,6 +26,7 @@ export default defineConfig({
     },
   },
   preview: {
+	  allowedHosts: ['.elb.amazonaws.com'],
     proxy: {
       // AI calls go to the ai-service; listed before /api so the longer prefix wins.
       '/api/ai': {
